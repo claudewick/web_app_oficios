@@ -36,7 +36,7 @@
                     <div class="single-best-receipe-area mb-30">
                         <img src="{% static 'img/bg-img/oficio_logo.jpg' %}" alt="">
                         <div class="receipe-content">
-                            <a href="receita.html">
+                            <a href="{% url 'novo_oficio' %}">
                                 <h5>Ofício</h5>
                             </a>
                         </div>
@@ -47,24 +47,6 @@
     </section>
     <!-- ##### Best Receipe Area End ##### -->
 
-    <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area">
-        <div class="container h-100">
-            <div class="row h-100">
-                <div class="col-12 h-100 d-flex flex-wrap align-items-center justify-content-between">
-                    <!-- Footer Social Info -->
-                    <div class="footer-social-info text-right">
-                        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                    </div>
-                    <!-- Footer Logo -->
-                    <div class="footer-logo">
-                        <a href="{% url 'index' %}"><img src="{% static 'img/core-img/suporte_logo_small3.png' %}" alt=""></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- ##### Footer Area Start ##### -->
+{% include 'partials/footer.html' %}
 
  {% endblock %}
