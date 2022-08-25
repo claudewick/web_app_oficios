@@ -30,18 +30,38 @@
     <!-- ##### Best Receipe Area Start ##### -->
     <section class="best-receipe-area">
         <div class="container">
-            <div class="row">
-                <!-- Single Best Receipe Area -->
-                <div class="col-12 col-sm-6 col-lg-4">
-                    <div class="single-best-receipe-area mb-30">
-                        <img src="{% static 'img/bg-img/oficio_logo.jpg' %}" alt="">
-                        <div class="receipe-content">
-                            <a href="{% url 'novo_oficio' %}">
-                                <h5>Ofício</h5>
-                            </a>
-                        </div>
-                    </div>
+            <div class="table table-bordered">
+                {% if oficios %}
+                <div class="table">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <th scope="col">Número do Ofício</th>
+                            <th scope="col">Autoridade Emitente</th>
+                            <th scope="col">Data de Recebimento</th>
+                            <th scope="col">Prazo de Resposta</th>
+                        </thead>
+                    </table>
                 </div>
+                {% for oficio in oficios %}
+                <div class="table">
+                    <table class="table">
+                        <tbody>
+                            <tr scope="col">
+                                <td><a href="{% url 'oficio' oficio.id %}">{{oficio.received_ol_number}}</a></td>
+                                <td>{{oficio.authority}}</td>
+                                <td>{{oficio.received_in}}</td>
+                                <td>{{oficio.deadline}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+                {% else %}
+                    <div>
+                        <h1>Não há Ofícios pendentes de resposta.</h1>
+                        <h2>Parabéns!!</h2>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>
