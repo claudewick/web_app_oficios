@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="contact-area section-padding-0-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
+                    <h3>Olá {{ user.username }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+    <section class="best-receipe-area">
+        <div class="container">
+            <div>
+                {% if oficios %}
+                <div class="contact-area section-padding-0-40">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-heading">
+                                    <h3>Você possui {{ oficio.len }} Ofícios pendentes de resposta</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <th scope="col">Número do Ofício</th>
+                        <th scope="col">Autoridade Emitente</th>
+                        <th scope="col">Data de Recebimento</th>
+                        <th scope="col">Prazo de Resposta</th>
+                    </thead>
+                    {% for oficio in oficios %}
+                    <tbody>
+                        <tr>
+                            <td scope="row"><a href="{% url 'oficio' oficio.id %}">{{oficio.received_ol_number}}</a></td>
+                            <td>{{oficio.authority}}</td>
+                            <td>{{oficio.received_in}}</td>
+                            <td>{{oficio.deadline}}</td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <div class="contact-area section-padding-0-80">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="section-heading">
+                                    <h3>Não há Ofícios pendentes de resposta</h3><br><br>
+                                    <h2>Parabéns!</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!-- ##### Best Receipe Area End ##### -->
+
+
+
+ {% endblock %}
