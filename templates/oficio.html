@@ -41,17 +41,25 @@
                         <div class="receipe-headline my-5">
                             <h2>Número do Ofício Recebido: {{oficio.received_ol_number}}</h2>
                             <div class="receipe-duration">
-                                <h6>Autoridade Emitente: {{ oficio.authority}}</h6>
-                                <h6>Recebido em: {{ oficio.received_in}}</h6>
-                                <h6>Data do Ofício: {{oficio.ol_date}}</h6>
-                                <h6>Número do Ofício: {{oficio.ol_origin_id}}</h6>
-                                <h6>Processo nº: {{oficio.lawsuit_number}}</h6>
-                                <h6>Autor: {{oficio.lawsuit_author}}</h6>
-                                <h6>CPF ou CNPJ: {{oficio.author_doc_number}}</h6>
-                                <h6>Réu: {{oficio.lawsuit_accused}}</h6>
-                                <h6>CPF ou CNPJ: {{oficio.accused_doc_number}}</h6>
-                                <h6>Prazo para Resposta: {{oficio.deadline}}</h6>
-                                <h6>Número do Ofício Resposta: {{oficio.answer_ol}}</h6>
+                                <h6>Autoridade Emitente:<b>  {{ oficio.authority}}</b></h6>
+                                <h6>Recebido em: <b>  {{ oficio.received_in}}</b></h6>
+                                <h6>Data do Ofício: <b>  {{oficio.ol_date}}</b></h6>
+                                <h6>Número do Ofício: <b>  {{oficio.ol_origin_id}}</b></h6>
+                                <h6>Processo nº: <b>  {{oficio.lawsuit_number}}</b></h6>
+                                <h6>Autor: <b>  {{oficio.lawsuit_author}}</b></h6>
+                                <h6>CPF ou CNPJ: <b>  {{oficio.author_doc_number}}</b></h6>
+                                <h6>Réu: <b>  {{oficio.lawsuit_accused}}</b></h6>
+                                <h6>CPF ou CNPJ: <b>  {{oficio.accused_doc_number}}</b></h6>
+                                <h6>Prazo para Resposta: <b>  {{oficio.deadline}}</b></h6>
+                                <h6>Número do Ofício Resposta: <b>  {{oficio.answer_ol}}</b></h6>
+                            </div>
+                            {% if oficio.status %}
+                            <div class="col-12 text-center"></div>
+                                <form action="#" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <button class="btn delicious-btn mt-30" type="submit">Responder Ofício</button>
+                                </form>
+                            {% endif %}
                             </div>
                         </div>
                     </div>

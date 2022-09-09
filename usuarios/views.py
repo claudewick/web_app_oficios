@@ -66,23 +66,23 @@ def dashboard(request):
 def novo_oficio(request):
     #TODO: criar pop-up informando o número do ofício
     #TODO: incluir seletor PF/PJ no form
-    if request.method == 'POST':
-        received_in = request.POST['received_in']
-        ol_date = request.POST['ol_date']
-        ol_origin_id = request.POST['ol_origin_id']
-        authority = request.POST['authority']  
-        lawsuit_number = request.POST['lawsuit_number']
-        lawsuit_author = request.POST['lawsuit_author']
-        author_doc_number = request.POST['author_doc_number']
-        author_type = 2 if len(author_doc_number) == 14 else 1
-        lawsuit_accused = request.POST['lawsuit_accused']
-        accused_doc_number = request.POST['accused_doc_number']
-        accused_type = 2 if len(accused_doc_number) == 14 else 1
-        deadline = request.POST['deadline']
-        received_ol_number = define_numero_oficio()
-        #TODO: incluir no form se o ofício requer resposta
-        #status = 
-        if request.user.is_authenticated:
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            received_in = request.POST['received_in']
+            ol_date = request.POST['ol_date']
+            ol_origin_id = request.POST['ol_origin_id']
+            authority = request.POST['authority']  
+            lawsuit_number = request.POST['lawsuit_number']
+            lawsuit_author = request.POST['lawsuit_author']
+            author_doc_number = request.POST['author_doc_number']
+            author_type = 2 if len(author_doc_number) == 14 else 1
+            lawsuit_accused = request.POST['lawsuit_accused']
+            accused_doc_number = request.POST['accused_doc_number']
+            accused_type = 2 if len(accused_doc_number) == 14 else 1
+            deadline = request.POST['deadline']
+            received_ol_number = define_numero_oficio()
+            #TODO: incluir no form se o ofício requer resposta
+            #status = 
             oficio = ReceivedOL.objects.create(
                 received_in=received_in, 
                 ol_date=ol_date, 
@@ -103,14 +103,14 @@ def novo_oficio(request):
             oficio.save()
             print(f'Ofício {received_ol_number} salvo com sucesso')
             return redirect('dashboard')
-        else:
+            
+        autoridades = Authority.objects.all()
+        dados = {
+                'autoridades': autoridades
+            }
+        return render(request, 'usuarios/novo_oficio.html', dados)
+    else:
             return redirect('index')
-
-    autoridades = Authority.objects.all()
-    dados = {
-        'autoridades': autoridades
-    }
-    return render(request, 'usuarios/novo_oficio.html', dados)
 
 def compara_ano(ano_oficio):
     ano_corrente = date.today().year

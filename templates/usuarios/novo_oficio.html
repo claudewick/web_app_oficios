@@ -21,28 +21,40 @@
                    <form action="{% url 'novo_oficio' %}" method="POST" enctype="multipart/form-data">
                            {% csrf_token %}
                        <div class="row">
-                            <div class="col-12 col-lg-9">
+                            <div class="col-12 col-lg-6">
                                 <label for="authority"><b>Autoridade Emitente: *</b></label>
                                 <select type="select" id="authority" class="form-control" name="authority" required>
                                     <option value="Selecione">Selecione</option>
                                     {% for autoridade in autoridades %}
                                     <option value="{{autoridade.id}}" id="authority" class="form-control" name="authority"> {{autoridade.name}} - {{autoridade.institution}} - {{autoridade.city}} - {{autoridade.state}}</option>
                                 {% endfor %}
-                            </select>
+                                </select>
+                            </div>
+                            <div class="col-12 col-lg-3">
+                                <form action="#" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <button class="btn btn-outline-primary mt-30" type="submit">Cadastrar Autoridade</button>
+                                </form>
+                            </div>
+                            <div class="form-check col-12 col-lg-3">
+                                <label for="file"><b>Exige Resposta? *</b></label><br>
+                                <input class="form-check-input col-lg-1" type="checkbox" id="exige_resposta_default" name="exige_resposta" checked required>
+                                <label class="form-check-label col-12 col-lg-2" for="exige_resposta_default" >Sim</label>
                             </div>
                             <div class="col-12 col-lg-3">
                                 <label for="file"><b>Número do Ofício:  </b></label>
                                 <input type="text" class="form-control" name="ol_origin_id" placeholder="Ex. Of. 44/2022">
                             </div>
-                            <div class="col-12 col-lg-4">
+                            <div class="col-12 col-lg-3">
                                 <label for="file"><b>Recebido em: *</b></label>
                                 <input class="form-control" name="received_in" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
                             </div>
-                            <div class="col-12 col-lg-4">
+                            <div class="col-12 col-lg-3">
                                 <label for="file"><b>Data do Ofício: *</b></label>
                                 <input class="form-control" name="ol_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
                             </div>
-                            <div class="col-12 col-lg-4">
+                            
+                            <div class="col-12 col-lg-3">
                                 <label for="file"><b>Prazo para Resposta: *</b></label>
                                 <input type="text" class="form-control" name="deadline" placeholder="Ex. 15/06/2022" required>
                             </div>
