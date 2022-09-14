@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-12 col-md-8">
                         <div class="receipe-headline my-5">
-                            <h2>Número do Ofício Recebido: {{oficio.received_ol_number}}</h2>
+                            <h3>Número do Ofício Recebido: <b>{{oficio.received_ol_number}}</b></h3>
                             <div class="receipe-duration">
                                 <h6>Autoridade Emitente:<b>  {{ oficio.authority}}</b></h6>
                                 <h6>Recebido em: <b>  {{ oficio.received_in}}</b></h6>
@@ -53,13 +53,14 @@
                                 <h6>Prazo para Resposta: <b>  {{oficio.deadline}}</b></h6>
                                 <h6>Número do Ofício Resposta: <b>  {{oficio.answer_ol}}</b></h6>
                             </div>
-                            {% if oficio.status %}
-                            <div class="col-12 text-center"></div>
-                                <form action="#" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <button class="btn delicious-btn mt-30" type="submit">Responder Ofício</button>
-                                </form>
-                            {% endif %}
+                            <div>
+                                {% if oficio.status %}
+                                <a href="{% url 'responde_oficio' %}" type="button" class="btn btn-success">Responder</a>
+                                {% endif %}
+                                <a href="{% url 'altera_oficio' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
+                                {% if user.is_superuser %}
+                                <a href="{% url 'apaga_oficio' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
