@@ -56,17 +56,5 @@ def logout(request):
     auth.logout(request)
     return redirect('index')
 
-def dashboard(request):
-    data_atual = date.today()
-    oficios_ativos = ReceivedOL.objects.filter(status=True).order_by('received_in') 
-    dados = {
-        "oficios": oficios_ativos,
-        "data_atual": data_atual
-    }
-    if request.user.is_authenticated:
-        return render(request, 'usuarios/dashboard.html', dados)
-    else:
-        return redirect('index')
-
 def campo_esta_vazio(campo):
     return not campo.strip()
