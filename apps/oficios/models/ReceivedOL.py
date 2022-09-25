@@ -16,7 +16,7 @@ class ReceivedOL(models.Model):
     deadline = models.DateField(verbose_name='Prazo para Resposta')
     received_ol_number = models.CharField(null=True, blank=True, max_length=50, verbose_name='Número do Ofício Recebido')
     answer_ol = models.CharField(null=True, blank=True, max_length=50, verbose_name='Número do Ofício Resposta')
-    status = models.BooleanField(default=True)
+    status = models.BooleanField(default=True, verbose_name='exige_resposta')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

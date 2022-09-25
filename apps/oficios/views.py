@@ -5,6 +5,7 @@ from .models.ReceivedOL import ReceivedOL, Authority
 from .models.SentOL import SentOL
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from oficios.forms.novo_oficio_form import NovoOficioForm
 
 def index(request):
     """Renderiza a página principal
@@ -70,7 +71,7 @@ def novo_oficio(request):
             accused_doc_number = request.POST['accused_doc_number']
             accused_type = 2 if len(accused_doc_number) == 14 else 1
             deadline = request.POST['deadline']
-            status = request.POST['exige_resposta'] if 'exige_resposta' == True else False
+            status = True if request.POST['status'] == 'on' else False
             received_ol_number = define_numero_oficio(ReceivedOL)
             oficio = ReceivedOL.objects.create(
                 received_in=received_in, 
@@ -94,8 +95,10 @@ def novo_oficio(request):
             return redirect('dashboard')
             
         autoridades = Authority.objects.all()
+        novo_oficio_form = NovoOficioForm()
         dados = {
-                'autoridades': autoridades
+                'autoridades': autoridades,
+                'form': novo_oficio_form,
             }
         return render(request, 'oficios/novo_oficio.html', dados)
     else:
