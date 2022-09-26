@@ -45,16 +45,16 @@
                             </div>
                             <div class="col-12 col-lg-3">
                                 <label for="file"><b>Recebido em: *</b></label>
-                                <input class="form-control" name="received_in" cols="30" rows="10" placeholder="Ex. 30/05/2022" value="{{oficio.received_in}}" required></input>
+                                <input class="form-control" type="date" name="received_in" cols="30" rows="10" placeholder="Ex. 30/05/2022" value="{{oficio.received_in|date:"Y-m-d" }}" required></input>
                             </div>
                             <div class="col-12 col-lg-3">
                                 <label for="file"><b>Data do Ofício: *</b></label>
-                                <input class="form-control" name="ol_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" value="{{oficio.ol_date}}" required></input>
+                                <input class="form-control" type="date" name="ol_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" value="{{oficio.ol_date|date:"Y-m-d"}}" required></input>
                             </div>
                             
                             <div class="col-12 col-lg-3">
                                 <label for="file"><b>Prazo para Resposta: *</b></label>
-                                <input type="text" class="form-control" name="deadline" placeholder="Ex. 15/06/2022" value="{{oficio.deadline}}" required>
+                                <input type="date" class="form-control" name="deadline" placeholder="Ex. 15/06/2022" value="{{oficio.deadline|date:"Y-m-d"}}" required>
                             </div>
                             <div class="col-12">
                                 <label for="file"><b>Processo nº: </b></label>

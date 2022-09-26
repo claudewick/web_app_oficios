@@ -70,7 +70,7 @@ def novo_oficio(request):
             accused_doc_number = request.POST['accused_doc_number']
             accused_type = 2 if len(accused_doc_number) == 14 else 1
             deadline = request.POST['deadline']
-            status = request.POST['exige_resposta'] if 'exige_resposta' == True else False
+            status = True if request.POST['exige_resposta'] else False
             received_ol_number = define_numero_oficio(ReceivedOL)
             oficio = ReceivedOL.objects.create(
                 received_in=received_in, 
@@ -89,6 +89,7 @@ def novo_oficio(request):
                 received_ol_number=received_ol_number,
                 answer_ol=None,
             )
+            print(request.POST['exige_resposta'])
             oficio.save()
             messages.success(request, f'Ofício {received_ol_number} salvo com sucesso')
             return redirect('dashboard')
@@ -123,10 +124,10 @@ def atualiza_oficio(request):
     if request.method == 'POST':
         oficio_id = request.POST['oficio_id']
         oficio_alterado = ReceivedOL.objects.get(pk=oficio_id)
-        #oficio_alterado.received_in = request.POST['received_in']
-        #oficio_alterado.ol_date = request.POST['ol_date']
+        oficio_alterado.received_in = request.POST['received_in']
+        oficio_alterado.ol_date = request.POST['ol_date']
         oficio_alterado.ol_origin_id = request.POST['ol_origin_id']
-        #oficio_alterado.authority = request.POST['authority']  
+        oficio_alterado.authority_id = request.POST['authority']  
         oficio_alterado.lawsuit_number = request.POST['lawsuit_number']
         oficio_alterado.lawsuit_author = request.POST['lawsuit_author']
         oficio_alterado.author_doc_number = request.POST['author_doc_number']
@@ -134,8 +135,8 @@ def atualiza_oficio(request):
         oficio_alterado.lawsuit_accused = request.POST['lawsuit_accused']
         oficio_alterado.accused_doc_number = request.POST['accused_doc_number']
         oficio_alterado.accused_type = 2 if len(oficio_alterado.accused_doc_number) == 14 else 1
-        #oficio_alterado.deadline = request.POST['deadline']
-        oficio_alterado.status = request.POST['exige_resposta'] if 'exige_resposta' == True else False
+        oficio_alterado.deadline = request.POST['deadline']
+        oficio_alterado.status = True if request.POST['exige_resposta'] else False
         oficio_alterado.save()
         return redirect('oficio', oficio_id)
 
