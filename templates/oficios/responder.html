@@ -5,88 +5,61 @@
  
 <!-- ##### Contact Form Area Start ##### -->
 <div class="contact-area section-padding-0-80">
-   <div class="container">
-       <div class="row">
-           <div class="col-12">
-               <div class="section-heading">
-                   <h3>Cadastro de Ofícios</h3>
-               </div>
-           </div>
-       </div>
- 
-       <div class="row">
-           <div class="col-12">
-           <p>Os campos marcados com "*" são obrigatórios</p>
-               <div class="contact-form-area">
-                   <form action="{% url 'responder_oficio' %}" method="POST" enctype="multipart/form-data">
-                           {% csrf_token %}
-                       <div class="row">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
+                    <h3>Resposta ao Ofício {{ oficio.received_ol_number}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+            <p>Os campos marcados com "*" são obrigatórios</p>
+                <div class="contact-form-area">
+                    <form action="{% url 'salva_oficio_resposta' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" id="oficio_id" class="form-control" name="oficio_id" value="{{oficio.id}}" hidden>
+                        <div class="row">
                             <div class="col-12 col-lg-6">
-                                <label for="authority"><b>Autoridade Emitente: *</b></label>
-                                <select type="select" id="authority" class="form-control" name="authority" required>
-                                    <option value="Selecione">Selecione</option>
-                                    {% for autoridade in autoridades %}
-                                    <option value="{{autoridade.id}}" id="authority" class="form-control" name="authority"> {{autoridade.name}} - {{autoridade.institution}} - {{autoridade.city}} - {{autoridade.state}}</option>
-                                {% endfor %}
-                                </select>
+                                <label for="authority"><b>Autoridade Emitente:</b></label>
+                                <input type="text" class="form-control" name="authority" value="{{ oficio.authority}}" disabled>
                             </div>
-                            <div class="col-12 col-lg-3">
-                                <form action="#" method="POST" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <button class="btn btn-outline-primary mt-30" type="submit">Cadastrar Autoridade</button>
-                                </form>
-                            </div>
-                            <div class="form-check col-12 col-lg-3">
-                                <label for="file"><b>Exige Resposta? *</b></label><br>
-                                <input class="form-check-input col-lg-1" type="checkbox" id="exige_resposta_default" name="exige_resposta" checked required>
-                                <label class="form-check-label col-12 col-lg-2" for="exige_resposta_default" >Sim</label>
-                            </div>
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>Número do Ofício:  </b></label>
-                                <input type="text" class="form-control" name="ol_origin_id" placeholder="Ex. Of. 44/2022">
-                            </div>
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>Recebido em: *</b></label>
-                                <input class="form-control" name="received_in" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
-                            </div>
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>Data do Ofício: *</b></label>
-                                <input class="form-control" name="ol_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
-                            </div>
-                            
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>Prazo para Resposta: *</b></label>
-                                <input type="text" class="form-control" name="deadline" placeholder="Ex. 15/06/2022" required>
-                            </div>
-                            <div class="col-12">
-                                <label for="file"><b>Processo nº: </b></label>
-                                <input type="text" class="form-control" name="lawsuit_number" placeholder="Ex. 1001456-44.2018.8.26.0311">
-                            </div>
-                            <div class="col-12 col-lg-9">
-                                <label for="file"><b>Autor: </b></label>
-                                <input type="text" class="form-control" name="lawsuit_author" placeholder="Ex. João da Silva">
-                            </div>
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>CPF ou CNPJ: </b></label>
-                                <input type="number" class="form-control" name="author_doc_number" placeholder="Ex. 000.000.000-01">
-                            </div>
-                            <div class="col-12 col-lg-9">
-                                <label for="file"><b>Réu: </b></label>
-                                <input type="text" class="form-control" name="lawsuit_accused" placeholder="Ex. João da Silva">
-                            </div>
-                            <div class="col-12 col-lg-3">
-                                <label for="file"><b>CPF ou CNPJ: </b></label>
-                                <input type="number" class="form-control" name="accused_doc_number" placeholder="Ex. 000.000.000-01">
-                            </div>
-                            <div class="col-12 text-center">
-                                <button class="btn delicious-btn mt-30" type="submit">Salvar</button>
-                            </div>
-                       </div>
-                   </form>
-               </div>
-           </div>
-       </div>
-   </div>
-</div>
- 
+                        <div class="col-12 col-lg-3">
+                            <label><b>Criado em: *</b></label>
+                            <input class="form-control" type="date" name="creation_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
+                        </div>
+                        <div class="col-12">
+                            <label><b>Processo nº: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_number" value="{{oficio.lawsuit_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            <label><b>Autor: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_author" value="{{oficio.lawsuit_author}}" disabled>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label><b>CPF ou CNPJ: </b></label>
+                            <input type="number" class="form-control" name="author_doc_number" value="{{oficio.author_doc_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            <label><b>Réu: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_accused" value="{{oficio.lawsuit_accused}}" disabled>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label for="file"><b>CPF ou CNPJ: </b></label>
+                            <input type="number" class="form-control" name="accused_doc_number" value="{{oficio.accused_doc_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-12">
+                            <label><b>Texto do Ofício</b></label>
+                            <textarea type="text" class="form-control" name="answer" value="{{oficio.accused_doc_number}}"></textarea>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn delicious-btn mt-30" type="submit">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
 {% endblock %}

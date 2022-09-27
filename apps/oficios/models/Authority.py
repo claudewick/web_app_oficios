@@ -2,6 +2,7 @@ from oficios.models import *
 from datetime import datetime
 
 class Authority(models.Model):
+    #TODO: incluir campo para cargo
     name = models.CharField(null=False, max_length=200)
     institution = models.CharField(max_length=200)
     state = models.ForeignKey(State, null=True, related_name='state', on_delete=models.SET_NULL)

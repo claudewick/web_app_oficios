@@ -2,6 +2,7 @@ from oficios.models import *
 from datetime import datetime
 
 class SentOL(models.Model):
+    #TODO: incluir campo para meio de envio e data de envio
     creation_date = models.DateField(verbose_name='Data de Elaboração')
     answer_to_ol = models.ForeignKey(ReceivedOL, null=True, on_delete=models.SET_NULL, verbose_name='Resposta ao Ofício nº')
     authority = models.ForeignKey(Authority, null=True, on_delete=models.SET_NULL, verbose_name='Destinatário')

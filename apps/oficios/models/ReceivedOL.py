@@ -2,6 +2,7 @@ from oficios.models import *
 from datetime import datetime
 
 class ReceivedOL(models.Model):
+    #TODO: incluir campo para observações e providencias
     received_in = models.DateField(verbose_name='Recebido em')
     ol_date = models.DateField(verbose_name='Data do Ofício')
     ol_origin_id = models.CharField(max_length=50, null=True, blank=True, verbose_name='Número ou Identificação do Ofício')

@@ -33,9 +33,15 @@ def oficio(request, oficio_id):
     """Exibe todas as informações de um ofício
     """
     oficio = get_object_or_404(ReceivedOL, pk=oficio_id) 
-
+    if oficio.answer_ol != None:
+        fk_do_oficio_resposta = oficio.answer_ol
+        oficio_resposta = get_object_or_404(SentOL, pk=fk_do_oficio_resposta)
+        numero_oficio_resposta = oficio_resposta.sent_ol_number
+    else:
+        numero_oficio_resposta = oficio.answer_ol
     oficio_a_exibir = {
-        'oficio': oficio
+        'oficio': oficio,
+        'resposta': numero_oficio_resposta
     }
     return render(request, 'oficios/oficio.html', oficio_a_exibir)
 
@@ -89,7 +95,6 @@ def novo_oficio(request):
                 received_ol_number=received_ol_number,
                 answer_ol=None,
             )
-            print(request.POST['exige_resposta'])
             oficio.save()
             messages.success(request, f'Ofício {received_ol_number} salvo com sucesso')
             return redirect('dashboard')
@@ -136,13 +141,66 @@ def atualiza_oficio(request):
         oficio_alterado.accused_doc_number = request.POST['accused_doc_number']
         oficio_alterado.accused_type = 2 if len(oficio_alterado.accused_doc_number) == 14 else 1
         oficio_alterado.deadline = request.POST['deadline']
-        oficio_alterado.status = True if request.POST['exige_resposta'] else False
+        oficio_alterado.status = request.POST.get['exige_resposta', False] 
         oficio_alterado.save()
         return redirect('oficio', oficio_id)
 
 
-def responde_oficio(request):
-    pass
+def responde_oficio(request, oficio_id):
+    oficio = get_object_or_404(ReceivedOL, pk=oficio_id)
+    autoridades = Authority.objects.all()
+    oficio_a_responder = {
+        'oficio': oficio,
+        'autoridades': autoridades,
+    }
+    return render(request, 'oficios/responder.html', oficio_a_responder)
+
+def salva_oficio_resposta(request):
+    #TODO: salvar sent_ol_number no oficio recebido
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            oficio_id = request.POST['oficio_id']
+            oficio_respondido = ReceivedOL.objects.get(pk=oficio_id)
+
+            creation_date = request.POST['creation_date']
+            answer_to_ol = ReceivedOL.objects.get(pk=oficio_id)
+            authority_id = oficio_respondido.authority_id
+            lawsuit_number = oficio_respondido.lawsuit_number
+            lawsuit_author = oficio_respondido.lawsuit_author
+            author_doc_number = oficio_respondido.author_doc_number
+            author_type = 2 if len(author_doc_number) == 14 else 1
+            lawsuit_accused = oficio_respondido.lawsuit_accused
+            accused_doc_number = oficio_respondido.accused_doc_number
+            accused_type = 2 if len(accused_doc_number) == 14 else 1
+            answer = request.POST['answer']
+            sent_ol_number = define_numero_oficio(SentOL)
+            status = False
+
+            oficio = SentOL.objects.create(
+                creation_date=creation_date, 
+                answer_to_ol=answer_to_ol, 
+                authority_id=authority_id,
+                lawsuit_number=lawsuit_number,
+                lawsuit_author=lawsuit_author,
+                author_type=author_type,
+                author_doc_number=author_doc_number,
+                lawsuit_accused=lawsuit_accused,
+                accused_type=accused_type,
+                accused_doc_number=accused_doc_number,
+                answer=answer,
+                sent_ol_number=sent_ol_number,
+                status=status,
+            )
+            #oficio.save()
+            messages.success(request, f'Ofício {sent_ol_number} salvo com sucesso')
+            
+            oficio_respondido.answer_ol=oficio.id
+            oficio_respondido.status=False
+            oficio_respondido.save()
+
+            return redirect('dashboard')
+    else:
+            return redirect('index')
 
 def define_numero_oficio(tipo_de_oficio):
     ano_corrente = date.today().year 
