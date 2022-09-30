@@ -5,6 +5,7 @@ from .models.ReceivedOL import ReceivedOL, Authority
 from .models.SentOL import SentOL
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .forms.novo_oficio_form import NovoOficioForm
 
 def index(request):
     """Renderiza a página principal
@@ -76,7 +77,7 @@ def novo_oficio(request):
             accused_doc_number = request.POST['accused_doc_number']
             accused_type = 2 if len(accused_doc_number) == 14 else 1
             deadline = request.POST['deadline']
-            status = True if request.POST['exige_resposta'] else False
+            status = True if request.POST.get('exige_resposta') == 'on' else False 
             received_ol_number = define_numero_oficio(ReceivedOL)
             oficio = ReceivedOL.objects.create(
                 received_in=received_in, 
@@ -101,11 +102,33 @@ def novo_oficio(request):
             
         autoridades = Authority.objects.all()
         dados = {
-                'autoridades': autoridades
+                'autoridades': autoridades,
+                'form': NovoOficioForm,
             }
         return render(request, 'oficios/novo_oficio.html', dados)
     else:
             return redirect('index')
+
+def novo_oficio_form(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = NovoOficioForm(request.POST)
+            form.author_type = 2 if len(form.author_doc_number) == 14 else 1
+            form.accused_type = 2 if len(form.accused_doc_number) == 14 else 1
+            #form.status = True if request.POST.get('exige_resposta') == 'on' else False
+            form.received_ol_number = define_numero_oficio(ReceivedOL)
+            if form.is_valid():
+                oficio = form.save()
+        autoridades = Authority.objects.all()
+        dados = {
+                'autoridades': autoridades,
+                'form': NovoOficioForm,
+            }
+        return render(request, 'oficios/novo_oficio.html', dados)
+        
+    
+    else:
+        return redirect('index')
 
 def apaga_oficio(request, oficio_id):
     """Apaga o ofício selecionado do banco de dados
@@ -132,7 +155,7 @@ def atualiza_oficio(request):
         oficio_alterado.received_in = request.POST['received_in']
         oficio_alterado.ol_date = request.POST['ol_date']
         oficio_alterado.ol_origin_id = request.POST['ol_origin_id']
-        oficio_alterado.authority_id = request.POST['authority']  
+        oficio_alterado.authority_id = Authority.objects.get(name=request.POST['authority']) 
         oficio_alterado.lawsuit_number = request.POST['lawsuit_number']
         oficio_alterado.lawsuit_author = request.POST['lawsuit_author']
         oficio_alterado.author_doc_number = request.POST['author_doc_number']
@@ -141,7 +164,7 @@ def atualiza_oficio(request):
         oficio_alterado.accused_doc_number = request.POST['accused_doc_number']
         oficio_alterado.accused_type = 2 if len(oficio_alterado.accused_doc_number) == 14 else 1
         oficio_alterado.deadline = request.POST['deadline']
-        oficio_alterado.status = request.POST.get['exige_resposta', False] 
+        oficio_alterado.status = True if request.POST.get('exige_resposta') == 'on' else False 
         oficio_alterado.save()
         return redirect('oficio', oficio_id)
 

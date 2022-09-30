@@ -51,7 +51,6 @@ class SentOLAdmin(admin.ModelAdmin):
     readonly_fields = ('sent_ol_number',)
     list_per_page = 10
     
-admin.site.register(State)
 admin.site.register(Authority, AuthorityAdmin)
 admin.site.register(ReceivedOL, ReceivedOLAdmin)
 admin.site.register(SentOL, SentOLAdmin)

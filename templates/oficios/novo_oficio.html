@@ -3,7 +3,7 @@
 {% block content %}
 
  
-<!-- ##### Contact Form Area Start ##### -->
+<!-- ##### Formulario sem usar Django Forms  ##### -->
 <div class="contact-area section-padding-0-80">
    <div class="container">
        <div class="row">
@@ -38,7 +38,7 @@
                             </div>
                             <div class="form-check col-12 col-lg-3">
                                 <label for="file"><b>Exige Resposta? *</b></label><br>
-                                <input class="form-check-input col-lg-1" type="checkbox" id="exige_resposta_default" value="True" name="exige_resposta" checked>
+                                <input class="form-check-input col-lg-1" type="checkbox" id="exige_resposta_default" name="exige_resposta" checked>
                                 <label class="form-check-label col-12 col-lg-2" for="exige_resposta_default" >Sim</label>
                             </div>
                             <div class="col-12 col-lg-3">
@@ -55,8 +55,8 @@
                             </div>
                             
                             <div class="col-12 col-lg-3">
-                                <label for="file"><b>Prazo para Resposta: *</b></label>
-                                <input type="date" class="form-control" name="deadline" placeholder="Ex. 15/06/2022" required>
+                                <label for="file"><b>Prazo para Resposta: </b></label>
+                                <input type="date" class="form-control" name="deadline" placeholder="Ex. 15/06/2022">
                             </div>
                             <div class="col-12">
                                 <label for="file"><b>Processo nº: </b></label>
@@ -86,6 +86,15 @@
                </div>
            </div>
        </div>
+   </div>
+   <!-- ##### Formulario usando Django Forms ##### -->
+   <div class="container">
+        <form action="{% url 'novo_oficio_form' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="Salvar">
+        </form>
+
    </div>
 </div>
  

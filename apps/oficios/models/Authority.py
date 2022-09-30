@@ -1,11 +1,43 @@
+from email.policy import default
+from random import choices
 from oficios.models import *
 from datetime import datetime
 
+STATE_CHOICES = (
+    ('AC', 'Acre'),
+    ('AL', 'Alagoas'),
+    ('AP', 'Amapá'),
+    ('AM', 'Amazonas'),
+    ('BA', 'Bahia'),
+    ('CE', 'Ceara'),
+    ('DF', 'Distrito Federal'),
+    ('ES', 'Espírito Santo'),
+    ('GO', 'Goiás'),
+    ('MA', 'Maranhão'),
+    ('MT', 'Mato Grosso'),
+    ('MS', 'Mato Grosso do Sul'),
+    ('MG', 'Minas Gerais'),
+    ('PA', 'Pará'), 
+    ('PB', 'Paraíba'),
+    ('PR', 'Paraná'),
+    ('PE',	'Pernambuco'),
+    ('PI', 'Piauí'),
+    ('RJ', 'Rio de Janeiro'),
+    ('RN', 'Rio Grande do Norte'),
+    ('RS', 'Rio Grande do Sul'),
+    ('RO', 'Rondônia'),
+    ('RR', 'Roraima'),
+    ('SC',	'Santa Catarina'),
+    ('SP', 'São Paulo'),
+    ('SE',	'Sergipe'),
+    ('TO', 'Tocantins'),
+)
+
 class Authority(models.Model):
-    #TODO: incluir campo para cargo
     name = models.CharField(null=False, max_length=200)
+    post = models.CharField(null=True, blank=True, max_length=200, default=None)
     institution = models.CharField(max_length=200)
-    state = models.ForeignKey(State, null=True, related_name='state', on_delete=models.SET_NULL)
+    state = models.CharField(null=False, max_length=2, choices=STATE_CHOICES, default='SP')
     city = models.CharField(null=True, blank=True, max_length=200)
     address = models.CharField(null=True, blank=True, max_length=200)
     number = models.CharField(null=True, blank=True, max_length=10)
@@ -21,4 +53,4 @@ class Authority(models.Model):
         verbose_name = 'Autoridade'
         verbose_name_plural = 'Autoridades'
     def __str__(self):
-        return '{}'.format(self.name, self.institution)
+        return '{}'.format(self.name, self.post, self.institution)

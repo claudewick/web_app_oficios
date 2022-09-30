@@ -14,7 +14,14 @@ PERSON_TYPE_CHOICE = (
     (2, 'PJ')
 )
 
-from .State import State
+DELIVERY_TYPE = (
+    (1, 'Entrega pessoal'),
+    (2, 'Correios'),
+    (3, 'email'),
+    (4, 'Portal'),
+    (5, 'Outros meios'),
+)
+
 from .Authority import Authority
 from .ReceivedOL import ReceivedOL
 from .SentOL import SentOL
