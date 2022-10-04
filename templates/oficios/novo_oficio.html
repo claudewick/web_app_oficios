@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap %}
 {% block content %}
 
  
@@ -18,7 +19,7 @@
            <div class="col-12">
            <p>Os campos marcados com "*" são obrigatórios</p>
                <div class="contact-form-area">
-                   <form action="{% url 'novo_oficio' %}" method="POST" enctype="multipart/form-data">
+                   <form action="" method="POST" enctype="multipart/form-data">
                            {% csrf_token %}
                        <div class="row">
                             <div class="col-12 col-lg-6">
@@ -88,13 +89,21 @@
        </div>
    </div>
    <!-- ##### Formulario usando Django Forms ##### -->
-   <div class="container">
-        <form action="{% url 'novo_oficio_form' %}" method="post">
+   <div class="container col-9">
+        <form action="{% url 'novo_oficio_form' %}" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-success" type="submit" value="Salvar">
+            {% for f in form %}
+                {% if f.label == 'Autoridade Emitente' %}    
+                    <div>
+                        {{ f | bootstrap }}
+                        <a href="{% url 'cadastra_autoridade' %}"><button class="btn btn-outline-primary mx-auto t-10" >Cadastrar Autoridade</button></a> 
+                    </div>
+                {% else %}
+                    {{ f | bootstrap }}
+                {% endif %}
+            {% endfor %}
+            <input class="btn delicious-btn mt-30" type="submit" value="Salvar">
         </form>
-
    </div>
 </div>
  

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block content %}
+
+   <!-- ##### Formulario usando Django Forms ##### -->
+   <div class="container col-9">
+        <form action="{% url 'cadastra_autoridade' %}" method="POST">
+            {% csrf_token %}
+            {{ form | bootstrap }}
+            <input class="btn delicious-btn mt-30" type="submit" value="Salvar">
+        </form>
+   </div>
+</div>
+ 
+{% endblock %}

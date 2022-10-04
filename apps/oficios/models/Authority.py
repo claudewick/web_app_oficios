@@ -1,5 +1,6 @@
 from email.policy import default
 from random import choices
+from tabnanny import verbose
 from oficios.models import *
 from datetime import datetime
 
@@ -34,17 +35,17 @@ STATE_CHOICES = (
 )
 
 class Authority(models.Model):
-    name = models.CharField(null=False, max_length=200)
-    post = models.CharField(null=True, blank=True, max_length=200, default=None)
-    institution = models.CharField(max_length=200)
-    state = models.CharField(null=False, max_length=2, choices=STATE_CHOICES, default='SP')
-    city = models.CharField(null=True, blank=True, max_length=200)
-    address = models.CharField(null=True, blank=True, max_length=200)
-    number = models.CharField(null=True, blank=True, max_length=10)
-    complement = models.CharField(null=True, blank=True, max_length=200)
-    cep = models.CharField(null=True, blank=True, max_length=8)
+    name = models.CharField(null=False, max_length=200, verbose_name='Nome')
+    post = models.CharField(null=True, blank=True, max_length=200, default=None, verbose_name='Cargo/Função')
+    institution = models.CharField(max_length=200, verbose_name='Órgão/Insituição')
+    state = models.CharField(null=False, max_length=2, choices=STATE_CHOICES, default='SP', verbose_name='Estado')
+    city = models.CharField(null=True, blank=True, max_length=200, verbose_name='Cidade')
+    address = models.CharField(null=True, blank=True, max_length=200, verbose_name='Endereço')
+    number = models.CharField(null=True, blank=True, max_length=10, verbose_name='Número')
+    complement = models.CharField(null=True, blank=True, max_length=200, verbose_name='Complemento')
+    cep = models.CharField(null=True, blank=True, max_length=8, verbose_name='CEP')
     email = models.EmailField(null=True, blank=True, max_length=100)
-    phone = models.CharField(null=True, blank=True, max_length=50) 
+    phone = models.CharField(null=True, blank=True, max_length=50, verbose_name='Telefone') 
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

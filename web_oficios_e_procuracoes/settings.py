@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrapform',
     'tempus_dominus',
     'usuarios',
     'oficios',

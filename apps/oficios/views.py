@@ -6,6 +6,8 @@ from .models.SentOL import SentOL
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms.novo_oficio_form import NovoOficioForm
+from .forms.autoridade_form import AutoridadeForm
+import logging
 
 def index(request):
     """Renderiza a página principal
@@ -59,10 +61,8 @@ def buscar(request):
     }
     return render(request, 'oficios/buscar.html', dados)
 
-def novo_oficio(request):
-    """Renderiza a página de cadastramento de novos ofícios
-    recebidos e salva as informações no banco de dados.
-    """
+"""def novo_oficio(request):
+
     if request.user.is_authenticated:
         if request.method == 'POST':
             received_in = request.POST['received_in']
@@ -108,17 +108,20 @@ def novo_oficio(request):
         return render(request, 'oficios/novo_oficio.html', dados)
     else:
             return redirect('index')
+"""
 
 def novo_oficio_form(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = NovoOficioForm(request.POST)
-            form.author_type = 2 if len(form.author_doc_number) == 14 else 1
-            form.accused_type = 2 if len(form.accused_doc_number) == 14 else 1
-            #form.status = True if request.POST.get('exige_resposta') == 'on' else False
-            form.received_ol_number = define_numero_oficio(ReceivedOL)
             if form.is_valid():
-                oficio = form.save()
+                oficio = form.save(commit=False)
+                oficio.author_type = 2 if oficio.author_doc_number != None and len(oficio.author_doc_number) == 14 else 1
+                oficio.accused_type = 2 if oficio.accused_doc_number != None and len(oficio.accused_doc_number) == 14 else 1
+                oficio.received_ol_number = define_numero_oficio(ReceivedOL)
+                oficio.save()
+                messages.success(request, f'Ofício {oficio.received_ol_number} salvo com sucesso')
+                return redirect('dashboard')
         autoridades = Authority.objects.all()
         dados = {
                 'autoridades': autoridades,
@@ -126,7 +129,6 @@ def novo_oficio_form(request):
             }
         return render(request, 'oficios/novo_oficio.html', dados)
         
-    
     else:
         return redirect('index')
 
@@ -141,10 +143,12 @@ def apaga_oficio(request, oficio_id):
 
 def altera_oficio(request, oficio_id):
     oficio = get_object_or_404(ReceivedOL, pk=oficio_id)
-    autoridades = Authority.objects.all()
+    form = NovoOficioForm(instance=oficio)
+    #autoridades = Authority.objects.all()
     oficio_a_editar = {
         'oficio': oficio,
-        'autoridades': autoridades,
+        #'autoridades': autoridades,
+        'form': form
     }
     return render(request, 'oficios/altera_oficio.html', oficio_a_editar)
 
@@ -224,6 +228,22 @@ def salva_oficio_resposta(request):
             return redirect('dashboard')
     else:
             return redirect('index')
+
+def cadastra_autoridade(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = AutoridadeForm(request.POST)
+            if form.is_valid():
+                form.save()
+                #messages.success(request, f'Ofício {oficio.received_ol_number} salvo com sucesso')
+                return redirect('dashboard')
+        dados = {
+                'form': AutoridadeForm,
+            }
+        return render(request, 'oficios/cadastra_autoridade.html', dados)
+        
+    else:
+        return redirect('index')
 
 def define_numero_oficio(tipo_de_oficio):
     ano_corrente = date.today().year 
