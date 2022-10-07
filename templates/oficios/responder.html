@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load bootstrap %}
 {% block content %}
 
  
@@ -13,52 +14,21 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-            <p>Os campos marcados com "*" são obrigatórios</p>
-                <div class="contact-form-area">
-                    <form action="{% url 'salva_oficio_resposta' %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <input type="text" id="oficio_id" class="form-control" name="oficio_id" value="{{oficio.id}}" hidden>
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <label for="authority"><b>Autoridade Emitente:</b></label>
-                                <input type="text" class="form-control" name="authority" value="{{ oficio.authority}}" disabled>
-                            </div>
-                        <div class="col-12 col-lg-3">
-                            <label><b>Criado em: *</b></label>
-                            <input class="form-control" type="date" name="creation_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
-                        </div>
-                        <div class="col-12">
-                            <label><b>Processo nº: </b></label>
-                            <input type="text" class="form-control" name="lawsuit_number" value="{{oficio.lawsuit_number}}"disabled>
-                        </div>
-                        <div class="col-12 col-lg-9">
-                            <label><b>Autor: </b></label>
-                            <input type="text" class="form-control" name="lawsuit_author" value="{{oficio.lawsuit_author}}" disabled>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label><b>CPF ou CNPJ: </b></label>
-                            <input type="number" class="form-control" name="author_doc_number" value="{{oficio.author_doc_number}}"disabled>
-                        </div>
-                        <div class="col-12 col-lg-9">
-                            <label><b>Réu: </b></label>
-                            <input type="text" class="form-control" name="lawsuit_accused" value="{{oficio.lawsuit_accused}}" disabled>
-                        </div>
-                        <div class="col-12 col-lg-3">
-                            <label for="file"><b>CPF ou CNPJ: </b></label>
-                            <input type="number" class="form-control" name="accused_doc_number" value="{{oficio.accused_doc_number}}"disabled>
-                        </div>
-                        <div class="col-12 col-lg-12">
-                            <label><b>Texto do Ofício</b></label>
-                            <textarea type="text" class="form-control" name="answer" value="{{oficio.accused_doc_number}}"></textarea>
-                        </div>
-                        <div class="col-12 text-center">
-                            <button class="btn delicious-btn mt-30" type="submit">Salvar</button>
-                        </div>
-                    </form>
+        <!-- ##### Formulario usando Django Forms ##### -->
+        <div class="container receipe-headline col-9">
+            <form action="{% url 'responde_oficio' oficio.id %}" method="POST">
+                {% csrf_token %}
+                <div class="receipe-duration">
+                    <h6>Autoridade Emitente:<b>  {{ oficio.authority}}</b></h6>
+                    <h6>Processo nº: <b>  {{oficio.lawsuit_number}}</b></h6>
+                    <h6>Autor: <b>  {{oficio.lawsuit_author}}</b></h6>
+                    <h6>CPF ou CNPJ: <b>  {{oficio.author_doc_number}}</b></h6>
+                    <h6>Réu: <b>  {{oficio.lawsuit_accused}}</b></h6>
+                    <h6>CPF ou CNPJ: <b>  {{oficio.accused_doc_number}}</b></h6>
+                    {{ form | bootstrap }}
                 </div>
-            </div>
+                <input class="btn delicious-btn mt-30" type="submit" value="Salvar">
+            </form>
         </div>
     </div>
 </div> 

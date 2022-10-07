@@ -29,6 +29,8 @@
                                 <h6>Réu: <b>  {{oficio.lawsuit_accused}}</b></h6>
                                 <h6>CPF ou CNPJ: <b>  {{oficio.accused_doc_number}}</b></h6>
                                 <h6>Prazo para Resposta: <b>  {{oficio.deadline}}</b></h6>
+                                <h6>Providências: <b>  {{oficio.measures}}</b></h6>
+                                <h6>Informações Adicionais: <b>  {{oficio.remarks}}</b></h6>
                                 {% if resposta %}
                                     <h6>Número do Ofício Resposta: <b>  {{resposta}}</b></h6>
                                 {% else %}
@@ -39,7 +41,7 @@
                                 {% if oficio.status %}
                                 <a href="{% url 'responde_oficio' oficio.id %}" type="button" class="btn btn-success">Responder</a>
                                 {% endif %}
-                                <a href="{% url 'altera_oficio' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
+                                <a href="{% url 'atualiza_oficio_form' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
                                 {% if user.is_superuser %}
                                 <a href="{% url 'apaga_oficio' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
                                 {% endif %}

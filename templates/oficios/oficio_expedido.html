@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <!-- Receipe Slider -->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="receipe-slider owl-carousel">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Receipe Content Area -->
+        <div class="receipe-content-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <div class="receipe-headline my-5">
+                            <h3>Número do Ofício Recebido: <b>{{oficio.sent_ol_number}}</b></h3>
+                            <div class="receipe-duration">
+                                {% if oficio.answer_to_ol != None %}
+                                    <h6>Resposta ao Ofício nº: <b>  {{oficio.answer_to_ol}}</b></h6>
+                                {% endif %}
+                                <h6>Data de Elaboração: <b>  {{ oficio.creation_date}}</b></h6>
+                                <h6>Destinatário:<b>  {{ oficio.authority}}</b></h6>
+                                <h6>Processo nº: <b>  {{oficio.lawsuit_number}}</b></h6>
+                                <h6>Autor: <b>  {{oficio.lawsuit_author}}</b></h6>
+                                <h6>CPF ou CNPJ: <b>  {{oficio.author_doc_number}}</b></h6>
+                                <h6>Réu: <b>  {{oficio.lawsuit_accused}}</b></h6>
+                                <h6>CPF ou CNPJ: <b>  {{oficio.accused_doc_number}}</b></h6>
+                                <h6>Texto do Ofício: <b><p> {{oficio.answer}} </p></b></h6>
+                                <h6>Forma de Envio: <b>  {{oficio.delivery}}</b></h6>
+                                <h6>Data de Envio: <b>  {{oficio.delivery_date_time}}</b></h6>
+                            </div>
+                            <div>
+                                <a href="" type="button" class="btn btn-warning">Editar</a>
+                                {% if user.is_superuser %}
+                                <a href="{% url 'apaga_oficio' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <!-- Single Preparation Step -->
+                        <div class="single-preparation-step d-flex">
+                        </div>
+                    </div>
+                </div>
+                <!-- Ingredientes -->
+
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+ 
+<!-- ##### Contact Form Area Start ##### -->
+<div class="contact-area section-padding-0-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
+                    <h3>Resposta ao Ofício {{ oficio.received_ol_number}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+            <p>Os campos marcados com "*" são obrigatórios</p>
+                <div class="contact-form-area">
+                    <form action="{% url 'salva_oficio_resposta' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" id="oficio_id" class="form-control" name="oficio_id" value="{{oficio.id}}" hidden>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <label for="authority"><b>Autoridade Emitente:</b></label>
+                                <input type="text" class="form-control" name="authority" value="{{ oficio.authority}}" disabled>
+                            </div>
+                        <div class="col-12 col-lg-3">
+                            <label><b>Criado em: *</b></label>
+                            <input class="form-control" type="date" name="creation_date" cols="30" rows="10" placeholder="Ex. 30/05/2022" required></input>
+                        </div>
+                        <div class="col-12">
+                            <label><b>Processo nº: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_number" value="{{oficio.lawsuit_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            <label><b>Autor: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_author" value="{{oficio.lawsuit_author}}" disabled>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label><b>CPF ou CNPJ: </b></label>
+                            <input type="number" class="form-control" name="author_doc_number" value="{{oficio.author_doc_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-9">
+                            <label><b>Réu: </b></label>
+                            <input type="text" class="form-control" name="lawsuit_accused" value="{{oficio.lawsuit_accused}}" disabled>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <label for="file"><b>CPF ou CNPJ: </b></label>
+                            <input type="number" class="form-control" name="accused_doc_number" value="{{oficio.accused_doc_number}}"disabled>
+                        </div>
+                        <div class="col-12 col-lg-12">
+                            <label><b>Texto do Ofício</b></label>
+                            <textarea type="text" class="form-control" name="answer" value="{{oficio.accused_doc_number}}"></textarea>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn delicious-btn mt-30" type="submit">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+{% endblock %}

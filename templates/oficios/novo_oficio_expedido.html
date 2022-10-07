@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block content %}
+
+ 
+<!-- ##### Formulario sem usar Django Forms  ##### -->
+<div class="contact-area section-padding-0-80">
+   <div class="container">
+       <div class="row">
+           <div class="col-12">
+               <div class="section-heading">
+                   <h3>Cadastro de Ofícios Expedidos</h3>
+               </div>
+           </div>
+       </div>
+    </div>
+
+   <!-- ##### Formulario usando Django Forms ##### -->
+   <div class="container receipe-headline col-9">
+        <form action="{% url 'novo_oficio_expedido_form' %}" method="POST">
+            {% csrf_token %}
+            {% for f in form %}
+                {% if f.label == 'Destinatário' %}    
+                    <div>
+                        {{ f | bootstrap }}
+                        <a href="{% url 'cadastra_autoridade' %}" type="button" class="btn btn-outline-primary mx-auto t-10" >Cadastrar Autoridade</a> 
+                    </div>
+                    <div><br></div>
+                {% else %}
+                    {{ f | bootstrap }}
+                {% endif %}
+            {% endfor %}
+            <input class="btn delicious-btn mt-30" type="submit" value="Salvar">
+        </form>
+   </div>
+</div>
+ 
+{% endblock %}

@@ -6,6 +6,9 @@ from .models.SentOL import SentOL
 from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms.novo_oficio_form import NovoOficioForm
+from .forms.sent_ol_form import OficioExpedidoForm
+from .forms.responde_oficio_form import RespondeOficioForm
+from .forms.altera_oficio_form import AlteraOficioForm
 from .forms.autoridade_form import AutoridadeForm
 import logging
 
@@ -32,23 +35,27 @@ def dashboard(request):
     else:
         return redirect('index')
 
-def oficio(request, oficio_id):
+def oficio_recebido(request, oficio_id):
     """Exibe todas as informações de um ofício
     """
     oficio = get_object_or_404(ReceivedOL, pk=oficio_id) 
-    if oficio.answer_ol != None:
-        fk_do_oficio_resposta = oficio.answer_ol
-        oficio_resposta = get_object_or_404(SentOL, pk=fk_do_oficio_resposta)
-        numero_oficio_resposta = oficio_resposta.sent_ol_number
-    else:
-        numero_oficio_resposta = oficio.answer_ol
+    
     oficio_a_exibir = {
         'oficio': oficio,
-        'resposta': numero_oficio_resposta
     }
-    return render(request, 'oficios/oficio.html', oficio_a_exibir)
+    return render(request, 'oficios/oficio_recebido.html', oficio_a_exibir)
 
-def buscar(request):
+def oficio_expedido(request, oficio_id):
+    """Exibe todas as informações de um ofício
+    """
+    oficio = get_object_or_404(SentOL, pk=oficio_id) 
+  
+    oficio_a_exibir = {
+        'oficio': oficio,
+    }
+    return render(request, 'oficios/oficio_expedido.html', oficio_a_exibir)
+
+def buscar_recebidos(request):
     oficios_buscados = ReceivedOL.objects.all()
     paginator = Paginator(oficios_buscados, 10)
     page = request.GET.get('page')
@@ -59,7 +66,21 @@ def buscar(request):
     dados = {
         "oficios": oficios_por_pagina
     }
-    return render(request, 'oficios/buscar.html', dados)
+    return render(request, 'oficios/buscar_recebidos.html', dados)
+
+def buscar_expedidos(request):
+    oficios_buscados = SentOL.objects.all()
+    paginator = Paginator(oficios_buscados, 10)
+    page = request.GET.get('page')
+    oficios_por_pagina = paginator.get_page(page)
+    if 'buscar' in request.GET:
+        termo_a_buscar = request.GET['buscar']
+        oficios_buscados = oficios_buscados.filter(ol_origin_id__icontains=termo_a_buscar)
+    dados = {
+        "oficios": oficios_por_pagina
+    }
+    return render(request, 'oficios/buscar_expedidos.html', dados)
+
 
 """def novo_oficio(request):
 
@@ -132,6 +153,29 @@ def novo_oficio_form(request):
     else:
         return redirect('index')
 
+
+def novo_oficio_expedido_form(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = OficioExpedidoForm(request.POST)
+            if form.is_valid():
+                oficio = form.save(commit=False)
+                oficio.author_type = 2 if oficio.author_doc_number != None and len(oficio.author_doc_number) == 14 else 1
+                oficio.accused_type = 2 if oficio.accused_doc_number != None and len(oficio.accused_doc_number) == 14 else 1
+                oficio.sent_ol_number = define_numero_oficio(SentOL)
+                oficio.save()
+                messages.success(request, f'Ofício {oficio.sent_ol_number} salvo com sucesso')
+                return redirect('dashboard')
+        autoridades = Authority.objects.all()
+        dados = {
+                'autoridades': autoridades,
+                'form': OficioExpedidoForm,
+            }
+        return render(request, 'oficios/novo_oficio_expedido.html', dados)
+        
+    else:
+        return redirect('index')
+
 def apaga_oficio(request, oficio_id):
     """Apaga o ofício selecionado do banco de dados
     """
@@ -141,46 +185,66 @@ def apaga_oficio(request, oficio_id):
     messages.success(request, f'Ofício {oficio.received_ol_number} apagado com sucesso.')
     return redirect('dashboard')
 
-def altera_oficio(request, oficio_id):
-    oficio = get_object_or_404(ReceivedOL, pk=oficio_id)
-    form = NovoOficioForm(instance=oficio)
-    #autoridades = Authority.objects.all()
-    oficio_a_editar = {
-        'oficio': oficio,
-        #'autoridades': autoridades,
-        'form': form
-    }
-    return render(request, 'oficios/altera_oficio.html', oficio_a_editar)
-
-def atualiza_oficio(request):
-    if request.method == 'POST':
-        oficio_id = request.POST['oficio_id']
-        oficio_alterado = ReceivedOL.objects.get(pk=oficio_id)
-        oficio_alterado.received_in = request.POST['received_in']
-        oficio_alterado.ol_date = request.POST['ol_date']
-        oficio_alterado.ol_origin_id = request.POST['ol_origin_id']
-        oficio_alterado.authority_id = Authority.objects.get(name=request.POST['authority']) 
-        oficio_alterado.lawsuit_number = request.POST['lawsuit_number']
-        oficio_alterado.lawsuit_author = request.POST['lawsuit_author']
-        oficio_alterado.author_doc_number = request.POST['author_doc_number']
-        oficio_alterado.author_type = 2 if len(oficio_alterado.author_doc_number) == 14 else 1
-        oficio_alterado.lawsuit_accused = request.POST['lawsuit_accused']
-        oficio_alterado.accused_doc_number = request.POST['accused_doc_number']
-        oficio_alterado.accused_type = 2 if len(oficio_alterado.accused_doc_number) == 14 else 1
-        oficio_alterado.deadline = request.POST['deadline']
-        oficio_alterado.status = True if request.POST.get('exige_resposta') == 'on' else False 
-        oficio_alterado.save()
-        return redirect('oficio', oficio_id)
+def atualiza_oficio_form(request, oficio_id):
+    #TODO: concluir
+    if request.user.is_authenticated:
+        oficio = get_object_or_404(ReceivedOL, pk=oficio_id)
+        form = AlteraOficioForm(instance=oficio)
+        if request.method == 'POST':
+            form = AlteraOficioForm(request.POST, instance=oficio)
+            if form.is_valid():
+                form.save()
+                return redirect('oficio', oficio_id)
+            else:
+                print('erro de salvamento')
+                print(form)
+        oficio_a_editar = {
+            'oficio': oficio.id,
+            'numero': oficio.received_ol_number,
+            'form': form,
+        }
+        return render(request, 'oficios/altera_oficio.html', oficio_a_editar)   
+    else:
+        return redirect('index')
 
 
 def responde_oficio(request, oficio_id):
-    oficio = get_object_or_404(ReceivedOL, pk=oficio_id)
-    autoridades = Authority.objects.all()
-    oficio_a_responder = {
-        'oficio': oficio,
-        'autoridades': autoridades,
-    }
-    return render(request, 'oficios/responder.html', oficio_a_responder)
+    if request.user.is_authenticated:
+        oficio_respondido = get_object_or_404(ReceivedOL, pk=oficio_id)
+        if request.method == 'POST':
+            form = RespondeOficioForm(request.POST)
+            if form.is_valid():
+                oficio = form.save(commit=False)
+                oficio.answer_to_ol = oficio_respondido
+                oficio.authority = oficio_respondido.authority
+                oficio.lawsuit_number = oficio_respondido.lawsuit_number
+                oficio.lawsuit_author = oficio_respondido.lawsuit_author
+                oficio.author_doc_number = oficio_respondido.author_doc_number
+                oficio.author_type = 2 if oficio.author_doc_number != None and len(oficio.author_doc_number) == 14 else 1
+                oficio.lawsuit_accused = oficio_respondido.lawsuit_accused
+                oficio.accused_doc_number = oficio_respondido.accused_doc_number
+                oficio.accused_type = 2 if oficio.accused_doc_number != None and len(oficio.accused_doc_number) == 14 else 1
+                oficio.sent_ol_number = define_numero_oficio(SentOL)
+                oficio.save()
+                print(oficio.sent_ol_number)
+                oficio_respondido.answer_ol = oficio.sent_ol_number
+                oficio_respondido.status = False
+                oficio_respondido.save()
+                messages.success(request, f'Ofício {oficio.sent_ol_number} salvo com sucesso')
+                return redirect('dashboard')
+        
+        
+        autoridades = Authority.objects.all()
+        oficio_a_responder = {
+            'oficio': oficio_respondido,
+            'autoridades': autoridades,
+            'form': RespondeOficioForm,
+        }
+        return render(request, 'oficios/responder.html', oficio_a_responder)
+        
+    else:
+        return redirect('index')
+    
 
 def salva_oficio_resposta(request):
     #TODO: salvar sent_ol_number no oficio recebido

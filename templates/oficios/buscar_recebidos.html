@@ -18,7 +18,7 @@
                     {% for oficio in oficios %}
                     <tbody>
                         <tr>
-                            <td scope="row"><a href="{% url 'oficio' oficio.id %}">{{oficio.received_ol_number}}</a></td>
+                            <td scope="row"><a href="{% url 'oficio_recebido' oficio.id %}">{{oficio.received_ol_number}}</a></td>
                             <td>{{oficio.authority}}</td>
                             <td>{{oficio.received_in}}</td>
                             <td>{{oficio.deadline}}</td>

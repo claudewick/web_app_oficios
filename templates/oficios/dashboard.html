@@ -45,7 +45,7 @@
                     {% else %}
                         <tr>
                     {% endif %}
-                            <td scope="row"><a href="{% url 'oficio' oficio.id %}">{{oficio.received_ol_number}}</a></td>
+                            <td scope="row"><a href="{% url 'oficio_recebido' oficio.id %}">{{oficio.received_ol_number}}</a></td>
                             <td>{{oficio.authority}}</td>
                             <td>{{oficio.received_in}}</td>
                             <td>{{oficio.deadline}}</td>
@@ -110,12 +110,38 @@
                 </section>
                 <!-- ##### Pagination End ##### -->
                 <div>
-                    <a href="{% url 'novo_oficio_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Recebido</a>
-                    <a href="" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Expedido</a>
-                    <a href="" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
-                    {% if user.is_superuser %}
-                    <a href="{% url 'renumera_oficios' %}" type="button" class="btn btn-danger btn-lg">Renumerar Todos os Ofícios</a>
-                    {% endif %}
+                    <div class="container">
+                        <div>
+                            <br><br><br>
+                            <h3>Ofícios Recebidos</h3>
+                        </div>
+                        <div>
+                            <a href="{% url 'novo_oficio_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Recebido</a>
+                            <a href="{% url 'buscar_recebidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
+                            <br><br><br>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div>
+                            <h3>Ofícios Expedidos</h3>
+                        </div>
+                        <div>
+                            <a href="{% url 'novo_oficio_expedido_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Expedido</a>
+                            <a href="{% url 'buscar_expedidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
+                            <br><br><br>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div>
+                            <h3>Gerenciamento</h3>
+                        </div>
+                        <div>
+                            <a href="" type="button" class="btn btn-warning btn-lg">Alterar senha de usuário</a>
+                            {% if user.is_superuser %}
+                            <a href="{% url 'renumera_oficios' %}" type="button" class="btn btn-danger btn-lg">Renumerar Todos os Ofícios</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
