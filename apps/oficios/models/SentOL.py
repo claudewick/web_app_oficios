@@ -3,6 +3,7 @@ from random import choices
 from oficios.models import *
 from datetime import datetime
 
+
 class SentOL(models.Model):
     #TODO: incluir campo para meio de envio e data de envio
     creation_date = models.DateField(verbose_name='Data de Elaboração')

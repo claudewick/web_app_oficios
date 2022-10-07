@@ -2,6 +2,7 @@ from email.policy import default
 from oficios.models import *
 from datetime import datetime
 
+
 class ReceivedOL(models.Model):
     received_in = models.DateField(verbose_name='Recebido em')
     ol_date = models.DateField(verbose_name='Data do Ofício')

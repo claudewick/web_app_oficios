@@ -39,9 +39,14 @@ def oficio_recebido(request, oficio_id):
     """Exibe todas as informações de um ofício
     """
     oficio = get_object_or_404(ReceivedOL, pk=oficio_id) 
-    
+    if oficio.answer_ol != None:
+        numero = oficio.answer_ol
+        oficio_resposta = get_object_or_404(SentOL, sent_ol_number=numero).id
+    else:
+        oficio_resposta = None
     oficio_a_exibir = {
         'oficio': oficio,
+        'oficio_resposta': oficio_resposta,
     }
     return render(request, 'oficios/oficio_recebido.html', oficio_a_exibir)
 
@@ -49,9 +54,15 @@ def oficio_expedido(request, oficio_id):
     """Exibe todas as informações de um ofício
     """
     oficio = get_object_or_404(SentOL, pk=oficio_id) 
+    if oficio.answer_to_ol != None:
+        numero = oficio.answer_to_ol
+        oficio_respondido = get_object_or_404(ReceivedOL, received_ol_number=numero).id
+    else:
+        oficio_respondido = None
   
     oficio_a_exibir = {
         'oficio': oficio,
+        'oficio_respondido': oficio_respondido,
     }
     return render(request, 'oficios/oficio_expedido.html', oficio_a_exibir)
 

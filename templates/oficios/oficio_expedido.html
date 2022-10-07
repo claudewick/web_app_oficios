@@ -20,8 +20,8 @@
                             <h3>Número do Ofício Recebido: <b>{{oficio.sent_ol_number}}</b></h3>
                             <div class="receipe-duration">
                                 {% if oficio.answer_to_ol != None %}
-                                    <h6>Resposta ao Ofício nº: <b>  {{oficio.answer_to_ol}}</b></h6>
-                                {% endif %}
+                                    <h6>Resposta ao Ofício nº: <b><a href="{% url 'oficio_recebido' oficio_respondido %}"> {{oficio.answer_to_ol}}</a></b></h6>
+                                    {% endif %}
                                 <h6>Data de Elaboração: <b>  {{ oficio.creation_date}}</b></h6>
                                 <h6>Destinatário:<b>  {{ oficio.authority}}</b></h6>
                                 <h6>Processo nº: <b>  {{oficio.lawsuit_number}}</b></h6>

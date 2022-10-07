@@ -31,11 +31,7 @@
                                 <h6>Prazo para Resposta: <b>  {{oficio.deadline}}</b></h6>
                                 <h6>Providências: <b>  {{oficio.measures}}</b></h6>
                                 <h6>Informações Adicionais: <b>  {{oficio.remarks}}</b></h6>
-                                {% if resposta %}
-                                    <h6>Número do Ofício Resposta: <b>  {{resposta}}</b></h6>
-                                {% else %}
-                                    <h6>Número do Ofício Resposta: <b>  {{oficio.answer_ol}}</b></h6>
-                                {% endif %}
+                                <h6>Número do Ofício Resposta: <b>{% if oficio.answer_ol != None %} <a href="{% url 'oficio_expedido' oficio_resposta %}">  {{oficio.answer_ol}}</a> {% else %} {{oficio.answer_ol}} {% endif %}</b></h6>
                             </div>
                             <div>
                                 {% if oficio.status %}
