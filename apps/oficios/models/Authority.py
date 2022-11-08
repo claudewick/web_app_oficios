@@ -37,7 +37,7 @@ STATE_CHOICES = (
 class Authority(models.Model):
     name = models.CharField(null=False, max_length=200, verbose_name='Nome')
     post = models.CharField(null=True, blank=True, max_length=200, default=None, verbose_name='Cargo/Função')
-    institution = models.CharField(max_length=200, verbose_name='Órgão/Insituição')
+    institution = models.CharField(max_length=200, verbose_name='Órgão/Instituição')
     state = models.CharField(null=False, max_length=2, choices=STATE_CHOICES, default='SP', verbose_name='Estado')
     city = models.CharField(null=True, blank=True, max_length=200, verbose_name='Cidade')
     address = models.CharField(null=True, blank=True, max_length=200, verbose_name='Endereço')
@@ -54,4 +54,4 @@ class Authority(models.Model):
         verbose_name = 'Autoridade'
         verbose_name_plural = 'Autoridades'
     def __str__(self):
-        return '{}'.format(self.name, self.post, self.institution)
+        return '{}'.format(self.institution)

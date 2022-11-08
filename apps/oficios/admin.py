@@ -11,7 +11,7 @@ class AuthorityAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 class ReceivedOLAdmin(admin.ModelAdmin):
-    list_display = ('received_ol_number','received_in', 'authority', 'deadline', 'status') 
+    list_display = ('received_ol_number','received_in', 'authority', 'deadline', 'answer_ol', 'status') 
     list_display_links = ('received_ol_number', 'received_in')
     list_editable = ('status',)
     search_fields = (
@@ -31,7 +31,7 @@ class ReceivedOLAdmin(admin.ModelAdmin):
         'answer_ol'
         )      
     list_filter = ('status', 'received_in', 'deadline')
-    readonly_fields = ('received_ol_number', 'answer_ol')
+    readonly_fields = ('received_ol_number',)
     list_per_page = 10
 
 class SentOLAdmin(admin.ModelAdmin):

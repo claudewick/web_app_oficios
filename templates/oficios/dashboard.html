@@ -116,8 +116,8 @@
                             <h3>Ofícios Recebidos</h3>
                         </div>
                         <div>
-                            <a href="{% url 'novo_oficio_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Recebido</a>
-                            <a href="{% url 'buscar_recebidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
+                            <a href="{% url 'novo_oficio_recebido_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Recebido</a>
+                            <a href="{% url 'exibir_recebidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
                             <br><br><br>
                         </div>
                     </div>
@@ -127,20 +127,31 @@
                         </div>
                         <div>
                             <a href="{% url 'novo_oficio_expedido_form' %}" type="button" class="btn btn-success btn-lg">Cadastrar Ofício Expedido</a>
-                            <a href="{% url 'buscar_expedidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
+                            <a href="{% url 'exibir_expedidos' %}" type="button" class="btn btn-success btn-lg">Consultas e Relatórios</a>
                             <br><br><br>
                         </div>
                     </div>
                     <div class="container">
                         <div>
+                            <h3>Autoridades</h3>
+                        </div>
+                        <div>
+                            <a href="{% url 'cadastra_autoridade' %}" type="button" class="btn btn-success btn-lg">Cadastrar Autoridade</a>
+                            <a href="{% url 'lista_autoridades' %}" type="button" class="btn btn-success btn-lg">Consultas</a>
+                            <br><br><br>
+                        </div>
+                    </div>
+                    <div class="container">
+                        {% if user.is_superuser %}
+                        <div>
                             <h3>Gerenciamento</h3>
                         </div>
                         <div>
                             <a href="" type="button" class="btn btn-warning btn-lg">Alterar senha de usuário</a>
-                            {% if user.is_superuser %}
                             <a href="{% url 'renumera_oficios' %}" type="button" class="btn btn-danger btn-lg">Renumerar Todos os Ofícios</a>
-                            {% endif %}
+                            
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

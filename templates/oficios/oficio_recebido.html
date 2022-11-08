@@ -16,6 +16,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-8">
+                        <a href="{% url 'exibir_recebidos' %}"><h3><b>Ofícios Recebidos</b></h3></a>
                         <div class="receipe-headline my-5">
                             <h3>Número do Ofício Recebido: <b>{{oficio.received_ol_number}}</b></h3>
                             <div class="receipe-duration">
@@ -31,15 +32,15 @@
                                 <h6>Prazo para Resposta: <b>  {{oficio.deadline}}</b></h6>
                                 <h6>Providências: <b>  {{oficio.measures}}</b></h6>
                                 <h6>Informações Adicionais: <b>  {{oficio.remarks}}</b></h6>
-                                <h6>Número do Ofício Resposta: <b>{% if oficio.answer_ol != None %} <a href="{% url 'oficio_expedido' oficio_resposta %}">  {{oficio.answer_ol}}</a> {% else %} {{oficio.answer_ol}} {% endif %}</b></h6>
+                                <h6>Número do Ofício Resposta: {% if oficio.answer_ol != None %} <a href="{% url 'oficio_expedido' oficio_resposta %}"> <b> {{oficio.answer_ol}}</b></a> {% else %} <b>{{oficio.answer_ol}}</b> {% endif %}</h6>
                             </div>
                             <div>
                                 {% if oficio.status %}
                                 <a href="{% url 'responde_oficio' oficio.id %}" type="button" class="btn btn-success">Responder</a>
                                 {% endif %}
-                                <a href="{% url 'atualiza_oficio_form' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
+                                <a href="{% url 'atualiza_oficio_recebido' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
                                 {% if user.is_superuser %}
-                                <a href="{% url 'apaga_oficio' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
+                                <a href="{% url 'apaga_oficio_recebido' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
                                 {% endif %}
                             </div>
                         </div>

@@ -17,7 +17,7 @@
         <!-- ##### Formulario usando Django Forms ##### -->
         <div class="container col-9">
             <p name="oficio_id" hidden>{{ oficio.id }}</p>
-            <form action="{% url 'atualiza_oficio_form' oficio %}" method="POST">
+            <form action="{% url 'atualiza_oficio_recebido' oficio %}" method="POST">
                 {% csrf_token %}
                 {% for f in form %}
                     {% if f.label == 'Autoridade Emitente' %}    

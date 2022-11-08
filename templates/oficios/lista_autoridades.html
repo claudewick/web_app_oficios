@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <!-- ##### Best Receipe Area Start ##### -->
+    <section class="best-receipe-area">
+        <div class="container">
+            <div>
+                {% include 'partials/_alertas.html' %}
+                {% if autoridades %}
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <th scope="col">Cargo</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Órgão/Instituição</th>
+                        <th scope="col">Cidade/Estado</th>
+                    </thead>
+                    {% for autoridade in autoridades %}
+                    <tbody>
+                        <tr>
+                            <td scope="row"><a href="{% url 'autoridade' autoridade.id %}">{{autoridade.post}}</a></td>
+                            <td>{{autoridade.name}}</td>
+                            <td>{{autoridade.institution}}</td>
+                            <td>{{autoridade.city}}/{{autoridade.state}}</td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <h1>Nenhum resultado encontrado</h1>
+                    </div>
+                {% endif %}
+                <div>
+                    <br><br><br>
+                    <a href="{% url 'cadastra_autoridade' %}" type="button" class="btn btn-success btn-lg">Cadastrar Autoridade</a>
+                </div>
+                <!-- ##### Pagination ##### -->
+                <section class="top-catagory-area section-padding-20-0">
+                    <div class="container">
+                        {% if oficios.has_other_pages %}
+                        <ul class="pagination">
+                            {% if oficios.has_previous %}
+                            <li class="page-item">
+                                <a href="?page={{oficios.previous_page_number}}" class="page-link">&laquo;</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&laquo;</a>
+                            </li>
+                            {% endif %}
+                            {% for pagina in oficios.paginator.page_range %}
+                            {% if oficios.number == pagina %}
+                            <li class="page-item active">
+                                <a class="page-link">{{pagina}}</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a href="?page={{pagina}}" class="page-link">{{pagina}}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if oficios.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{oficios.next_page_number}}" class="page-link">&raquo;</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link">&raquo;</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </section>
+                <!-- ##### Pagination End ##### -->
+            </div>
+        </div>
+    </section>
+    <!-- ##### Best Receipe Area End ##### -->
+
+
+
+ {% endblock %}

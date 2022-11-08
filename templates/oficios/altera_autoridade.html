@@ -10,7 +10,7 @@
        <div class="row">
            <div class="col-12">
                <div class="section-heading">
-                   <h3>Alteração de Ofício Expedido {{ numero }}</h3>
+                   <h3>Alteração de Autoridade</h3>
                </div>
            </div>
        </div>
@@ -18,18 +18,10 @@
 
    <!-- ##### Formulario usando Django Forms ##### -->
    <div class="container receipe-headline col-9">
-        <form action="{% url 'novo_oficio_expedido_form' %}" method="POST">
+        <form action="{% url 'altera_autoridade' autoridade.id %}" method="POST">
             {% csrf_token %}
             {% for f in form %}
-                {% if f.label == 'Destinatário' %}    
-                    <div>
-                        {{ f | bootstrap }}
-                        <a href="{% url 'cadastra_autoridade' %}" type="button" class="btn btn-outline-primary mx-auto t-10" >Cadastrar Autoridade</a> 
-                    </div>
-                    <div><br></div>
-                {% else %}
-                    {{ f | bootstrap }}
-                {% endif %}
+                {{ f | bootstrap }}
             {% endfor %}
             <input class="btn delicious-btn mt-30" type="submit" value="Salvar">
         </form>

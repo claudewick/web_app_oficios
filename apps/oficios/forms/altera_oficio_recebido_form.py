@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from ..models.ReceivedOL import ReceivedOL
 
 
-class AlteraOficioForm(forms.ModelForm):
+class AlteraOficioRecebidoForm(forms.ModelForm):
 
     class Meta:
         model = ReceivedOL

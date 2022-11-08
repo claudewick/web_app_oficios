@@ -16,11 +16,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-8">
+                        <a href="{% url 'exibir_expedidos' %}"><h3><b>Ofícios Expedidos</b></h3></a>
                         <div class="receipe-headline my-5">
                             <h3>Número do Ofício Recebido: <b>{{oficio.sent_ol_number}}</b></h3>
                             <div class="receipe-duration">
                                 {% if oficio.answer_to_ol != None %}
-                                    <h6>Resposta ao Ofício nº: <b><a href="{% url 'oficio_recebido' oficio_respondido %}"> {{oficio.answer_to_ol}}</a></b></h6>
+                                    <h6>Resposta ao Ofício nº: <a href="{% url 'oficio_recebido' oficio_respondido %}"><b> {{oficio.answer_to_ol}}</b></a></h6>
                                     {% endif %}
                                 <h6>Data de Elaboração: <b>  {{ oficio.creation_date}}</b></h6>
                                 <h6>Destinatário:<b>  {{ oficio.authority}}</b></h6>
@@ -34,9 +35,9 @@
                                 <h6>Data de Envio: <b>  {{oficio.delivery_date_time}}</b></h6>
                             </div>
                             <div>
-                                <a href="" type="button" class="btn btn-warning">Editar</a>
+                                <a href="{% url 'atualiza_oficio_expedido' oficio.id %}" type="button" class="btn btn-warning">Editar</a>
                                 {% if user.is_superuser %}
-                                <a href="{% url 'apaga_oficio' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
+                                <a href="{% url 'apaga_oficio_expedido' oficio.id %}" type="button" class="btn btn-danger">Excluir</a>
                                 {% endif %}
                             </div>
                         </div>
